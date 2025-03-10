@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { Download, Mail, Instagram, Twitter, Youtube, Music, Phone, Pause, Play, Building, User } from "lucide-react"
+import { Instagram, Youtube, Phone, Pause, Play, Building, User } from "lucide-react"
 import { useLanguage } from "@/lib/language-context"
 // Import components only if they are used
 // import { AudioPlayer } from "@/components/audio-player"
@@ -13,7 +13,7 @@ import { useState } from "react"
 import { ProtectedRoute } from "@/components/protected-route"
 
 export default function EPK() {
-  const { t } = useLanguage();
+  // No necesitamos 't' aquí si no se utiliza
   
   return (
     <ProtectedRoute>
@@ -524,6 +524,9 @@ function EPKContent() {
               {t('footer.terms')}
             </Link>
           </div>
+          <p className="mt-4 text-sm text-gray-600">
+            Desarrollado por <a href="https://github.com/gianpetrii" target="_blank" rel="noopener noreferrer" className="text-highlight hover:underline">Gianluca Petri</a>
+          </p>
         </div>
       </footer>
     </div>
