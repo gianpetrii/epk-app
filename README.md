@@ -34,3 +34,50 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## Firebase Deployment
+
+This project is configured to be deployed to Firebase Hosting. Follow these steps to deploy:
+
+1. Make sure you have the Firebase CLI installed:
+   ```bash
+   npm install -g firebase-tools
+   ```
+
+2. Log in to Firebase:
+   ```bash
+   firebase login
+   ```
+
+3. Initialize Firebase (if not already done):
+   ```bash
+   node firebase-init.js
+   ```
+   
+   Or manually:
+   ```bash
+   firebase init hosting
+   ```
+
+4. Build and deploy the app:
+   ```bash
+   npm run deploy
+   ```
+
+5. Your app will be deployed to: https://epk-app-13210.web.app
+
+## Environment Variables
+
+This project uses environment variables for Firebase configuration. Create a `.env.local` file in the root directory with the following variables:
+
+```
+NEXT_PUBLIC_FIREBASE_API_KEY=your_api_key
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your_project_id.firebaseapp.com
+NEXT_PUBLIC_FIREBASE_PROJECT_ID=your_project_id
+NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your_project_id.firebasestorage.app
+NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your_messaging_sender_id
+NEXT_PUBLIC_FIREBASE_APP_ID=your_app_id
+NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID=your_measurement_id
+```
+
+Replace the placeholder values with your actual Firebase configuration.

@@ -39,3 +39,13 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# large audio files
+/public/audio/*.wav
+/public/images/*.jpg
+/public/pdf/*.pdf
+# Firebase
+/.firebase/
+/firebase-debug.log
+/firestore-debug.log
+/ui-debug.log
