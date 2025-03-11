@@ -11,7 +11,7 @@ type PasswordContextType = {
 const PasswordContext = createContext<PasswordContextType | undefined>(undefined);
 
 // The correct password for accessing the site
-const CORRECT_PASSWORD = 'nacho-epk'; // You can change this to any password you want
+const CORRECT_PASSWORD = 'nacho2025'; // You can change this to any password you want
 
 export function PasswordProvider({ children }: { children: React.ReactNode }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);

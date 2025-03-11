@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { Instagram, Youtube, Phone, Pause, Play, Building, User } from "lucide-react"
+import { Instagram, Youtube, Phone, Pause, Play, Building, User, Mail } from "lucide-react"
 import { useLanguage } from "@/lib/language-context"
 // Import components only if they are used
 // import { AudioPlayer } from "@/components/audio-player"
@@ -90,7 +90,7 @@ function EPKContent() {
   const songs = [
     {
       title: "Londres",
-      src: "/audio/Londres_JaviMix_13.wav"
+      src: "/audio/Londres_JaviMix_13_+2bpm.wav"
     },
     {
       title: "Mi Angel",
@@ -467,8 +467,14 @@ function EPKContent() {
                 </p>
                 <p className="flex items-center gap-2">
                   <Phone className="h-4 w-4 flex-shrink-0" />
-                  <a href="tel:+18184929264" className="hover:text-primary">
-                    818-492-9264
+                  <a href="tel:+18184029264" className="hover:text-primary">
+                    818-402-9264
+                  </a>
+                </p>
+                <p className="flex items-center gap-2">
+                  <Mail className="h-4 w-4 flex-shrink-0" />
+                  <a href="mailto:malibustudios@gmail.com" className="hover:text-primary">
+                    malibustudios@gmail.com
                   </a>
                 </p>
               </div>
