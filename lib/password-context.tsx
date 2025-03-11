@@ -18,7 +18,7 @@ export function PasswordProvider({ children }: { children: React.ReactNode }) {
 
   // Check if user is already authenticated on component mount
   useEffect(() => {
-    const authStatus = localStorage.getItem('epk-auth');
+    const authStatus = sessionStorage.getItem('epk-auth');
     if (authStatus === 'true') {
       setIsAuthenticated(true);
     }
@@ -28,14 +28,14 @@ export function PasswordProvider({ children }: { children: React.ReactNode }) {
     const isCorrect = password === CORRECT_PASSWORD;
     if (isCorrect) {
       setIsAuthenticated(true);
-      localStorage.setItem('epk-auth', 'true');
+      sessionStorage.setItem('epk-auth', 'true');
     }
     return isCorrect;
   };
 
   const logout = () => {
     setIsAuthenticated(false);
-    localStorage.removeItem('epk-auth');
+    sessionStorage.removeItem('epk-auth');
   };
 
   return (
