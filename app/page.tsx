@@ -9,7 +9,7 @@ import { useLanguage } from "@/lib/language-context"
 import { ImageGallery } from "@/components/image-gallery"
 import { DownloadButton } from "@/components/download-button"
 // import Image from "next/image"
-import { useState } from "react"
+import { useState, useRef, useEffect, useMemo } from "react"
 import { ProtectedRoute } from "@/components/protected-route"
 
 export default function EPK() {
@@ -70,6 +70,8 @@ const smoothScrollTo = (elementId: string, e?: React.MouseEvent) => {
 function EPKContent() {
   const { t } = useLanguage();
   const [playingIndex, setPlayingIndex] = useState<number | null>(null);
+  const audioRefs = useRef<(HTMLAudioElement | null)[]>([]);
+  const [errorStates, setErrorStates] = useState<boolean[]>([false, false, false]);
 
   // Función para desplazamiento suave a la sección de contacto
   const scrollToContact = (e: React.MouseEvent) => {
@@ -79,15 +81,44 @@ function EPKContent() {
   const togglePlay = (index: number) => {
     if (playingIndex === index) {
       // Pause the current song
+      if (audioRefs.current[index]) {
+        audioRefs.current[index]?.pause();
+      }
       setPlayingIndex(null);
     } else {
+      // Pause any currently playing song
+      if (playingIndex !== null && audioRefs.current[playingIndex]) {
+        audioRefs.current[playingIndex]?.pause();
+      }
+      
       // Play the selected song
+      if (audioRefs.current[index]) {
+        try {
+          const playPromise = audioRefs.current[index]?.play();
+          
+          if (playPromise !== undefined) {
+            playPromise.catch(error => {
+              console.error("Error al reproducir el audio:", error);
+              // Marcar esta canción como con error
+              const newErrorStates = [...errorStates];
+              newErrorStates[index] = true;
+              setErrorStates(newErrorStates);
+            });
+          }
+        } catch (error) {
+          console.error("Error al intentar reproducir:", error);
+          // Marcar esta canción como con error
+          const newErrorStates = [...errorStates];
+          newErrorStates[index] = true;
+          setErrorStates(newErrorStates);
+        }
+      }
       setPlayingIndex(index);
     }
   };
 
   // Tracks with local audio file
-  const songs = [
+  const songs = useMemo(() => [
     {
       title: "Londres",
       src: "/audio/Londres_JaviMix_13_+2bpm.wav"
@@ -100,7 +131,55 @@ function EPKContent() {
       title: "Tu Balcón",
       src: "/audio/Balcón_JaviMix_7.4.wav"
     }
-  ];
+  ], []);
+
+  // Precargar los archivos de audio cuando se monta el componente
+  useEffect(() => {
+    // Inicializar los refs de audio
+    audioRefs.current = audioRefs.current.slice(0, songs.length);
+    
+    // Precargar los archivos de audio
+    songs.forEach((song, index) => {
+      if (!audioRefs.current[index]) {
+        const audio = new Audio();
+        
+        // Manejar el evento de error
+        audio.addEventListener('error', (e) => {
+          console.error(`Error loading audio ${index}:`, e);
+          const newErrorStates = [...errorStates];
+          newErrorStates[index] = true;
+          setErrorStates(newErrorStates);
+        });
+        
+        // Manejar el evento de finalización
+        audio.addEventListener('ended', () => {
+          setPlayingIndex(null);
+        });
+        
+        audio.src = song.src;
+        audio.preload = "auto"; // Precargar automáticamente
+        
+        // Intentar cargar el audio
+        try {
+          audio.load(); // Iniciar la carga
+        } catch (error) {
+          console.error("Error al cargar el audio:", error);
+        }
+        
+        audioRefs.current[index] = audio;
+      }
+    });
+    
+    // Limpiar los elementos de audio al desmontar
+    return () => {
+      audioRefs.current.forEach(audio => {
+        if (audio) {
+          audio.pause();
+          audio.src = '';
+        }
+      });
+    };
+  }, [songs, errorStates]);
 
   // Press photos using the uploaded images and new shared images
   const pressPhotos = [
@@ -366,7 +445,10 @@ function EPKContent() {
                         ? 'bg-black text-primary' 
                         : 'bg-black text-white group-hover:text-primary'}`}
                     >
-                      {playingIndex === index ? (
+                      {errorStates[index] ? (
+                        // Icono de error
+                        <span className="text-red-500 text-xs">!</span>
+                      ) : playingIndex === index ? (
                         <Pause className="h-5 w-5 sm:h-6 sm:w-6" />
                       ) : (
                         <Play className="h-5 w-5 sm:h-6 sm:w-6" />
@@ -375,16 +457,13 @@ function EPKContent() {
                     <span className="text-lg sm:text-2xl font-bold uppercase tracking-wide">{song.title}</span>
                   </div>
                   <div className="text-xs sm:text-base uppercase font-bold tracking-wider ml-2">
-                    {playingIndex === index ? 'NOW PLAYING' : 'PLAY TRACK'}
+                    {errorStates[index] ? 'ERROR' : playingIndex === index ? 'NOW PLAYING' : 'PLAY TRACK'}
                   </div>
                 </button>
-                {playingIndex === index && (
-                  <audio 
-                    src={song.src} 
-                    autoPlay 
-                    onEnded={() => setPlayingIndex(null)}
-                    className="hidden"
-                  />
+                {errorStates[index] && (
+                  <div className="mt-2 text-red-500 text-xs px-4 sm:px-8">
+                    Error al reproducir el audio. El formato WAV puede no ser compatible con tu navegador.
+                  </div>
                 )}
               </div>
             ))}
