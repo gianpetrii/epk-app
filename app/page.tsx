@@ -342,7 +342,10 @@ function EPKContent() {
 
         {/* Songs Section */}
         <section id="songs" className="space-y-12">
-          <h2 className="text-2xl sm:text-3xl font-bold mb-12 text-primary">{t('songs.title')}</h2>
+          <div className="flex items-baseline mb-12">
+            <h2 className="text-2xl sm:text-3xl font-bold text-primary">{t('songs.title')}</h2>
+            <span className="text-xs uppercase ml-3 text-primary italic">(unreleased)</span>
+          </div>
 
           <div className="bg-black p-4">
             {songs.map((song, index) => (
@@ -352,26 +355,26 @@ function EPKContent() {
               >
                 <button 
                   onClick={() => togglePlay(index)} 
-                  className={`w-full px-8 py-6 flex items-center justify-between text-left transition-colors duration-200 
+                  className={`w-full px-4 sm:px-8 py-6 flex items-center justify-between text-left transition-colors duration-200 
                     ${playingIndex === index 
                       ? 'bg-black text-primary' 
                       : 'bg-white text-black group-hover:bg-black group-hover:text-primary active:text-primary'}`}
                 >
-                  <div className="flex items-center gap-6">
-                    <div className={`w-12 h-12 flex items-center justify-center transition-colors duration-200
+                  <div className="flex items-center gap-3 sm:gap-6">
+                    <div className={`w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center transition-colors duration-200
                       ${playingIndex === index 
                         ? 'bg-black text-primary' 
                         : 'bg-black text-white group-hover:text-primary'}`}
                     >
                       {playingIndex === index ? (
-                        <Pause className="h-6 w-6" />
+                        <Pause className="h-5 w-5 sm:h-6 sm:w-6" />
                       ) : (
-                        <Play className="h-6 w-6" />
+                        <Play className="h-5 w-5 sm:h-6 sm:w-6" />
                       )}
                     </div>
-                    <span className="text-2xl font-bold uppercase tracking-wide">{song.title}</span>
+                    <span className="text-lg sm:text-2xl font-bold uppercase tracking-wide">{song.title}</span>
                   </div>
-                  <div className="text-base uppercase font-bold tracking-wider">
+                  <div className="text-xs sm:text-base uppercase font-bold tracking-wider ml-2">
                     {playingIndex === index ? 'NOW PLAYING' : 'PLAY TRACK'}
                   </div>
                 </button>

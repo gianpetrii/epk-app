@@ -62,6 +62,7 @@ const translations = {
     'songs.listen': 'Listen',
     'songs.details': 'View Details',
     'songs.stream': 'Stream my music on all major platforms:',
+    'songs.unreleased': 'Unreleased Tracks',
     
     // Press section
     'press.title': 'Press & Media',
@@ -139,6 +140,7 @@ const translations = {
     'songs.listen': 'Escuchar',
     'songs.details': 'Ver Detalles',
     'songs.stream': 'Escucha mi música en todas las plataformas principales:',
+    'songs.unreleased': 'Canciones Inéditas',
     
     // Press section
     'press.title': 'Prensa y Medios',
